@@ -168,6 +168,9 @@ public class Game1 : Game
             || Keyboard.GetState().IsKeyDown(Keys.Escape)
         )
             Exit();
+        if (IsGameOver(_pickBlocks, _board){
+            Exit();
+        }
         MouseState mouseState = Mouse.GetState();
         Vector2 currentMousePosition = new Vector2(mouseState.X, mouseState.Y);
         Vector2 mouseDelta = currentMousePosition - _previousMousePosition;
@@ -537,7 +540,44 @@ public class Game1 : Game
 
         return false;
     }
+    private bool IsGameOver(BlockLayout[] pickBlock, bool[,] board)
 
+    {
+        bool gameOver = true;
+        List<Square> newSquares = new List<Square>();
+
+        foreach (BlockLayout block in pickBlock)
+        {
+            BlockLayout tBlock = block;
+            foreach (Vector2 bSquare in _backroundBlockPositions)
+            {
+                tBlock.position = bSquare;
+                for (int i = 0; i < block.squarePositions.Length; i++)
+                {
+                    Vector2 square = tBlock.squarePositions[i];
+                    foreach (Vector2 gridPosition in _backroundBlockPositions)
+                    {
+                        if (
+                            Vector2.Distance(square, gridPosition) < 24
+                            && !IsPositionOccupied(gridPosition)
+                        )
+                        {
+                            newSquares.Add(new Square(gridPosition, Color.AliceBlue));
+
+                            break;
+                        }
+                    }
+                }
+                if (newSquares.Count == tBlock.squarePositions.Length)
+                {
+                    gameOver = false;
+                }
+
+
+            }
+        }
+        
+    }
     private bool TryGetGridIndex(Vector2 position, out int row, out int col)
     {
         for (int r = 0; r < _backroundBlockPositions.GetLength(0); r++)
