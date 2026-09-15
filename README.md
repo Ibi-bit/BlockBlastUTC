@@ -1,4 +1,4 @@
-# Block Blash (UTC Leeds)
+# Block Blast (UTC Leeds)
 
 A recreation of **Block Blast** built in **C# with MonoGame**, made to demo at the **UTC Leeds** open evenings.
 
